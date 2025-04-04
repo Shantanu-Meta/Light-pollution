@@ -26,14 +26,18 @@ def run_clusters():
     from cluster_model import run_kmeans_model
     run_kmeans_model()
 
+def run_dbscan():
+    from dbscan_model import run_dbscan_model
+    run_dbscan_model()
+
 # -------------------- Streamlit Layout --------------------
 
 # Sidebar Menu
 with st.sidebar:
     selected = option_menu(
         "Light Pollution Analyzer",  # App name as header
-        ["🏠 Home", "📈 Forecast (state wise)", "🔍 Key Factor", "🧩 Clusters(state wise)"],
-        icons=["house", "bar-chart", "graph-up", "diagram-3"],
+        ["🏠 Home", "📈 Forecast (state wise)", "🔍 Key Factor", "🧩 Clusters(state wise)", "💾 DB-scan"],
+        icons=["house", "bar-chart", "graph-up", "diagram-3", "database"],
         menu_icon="cloud-sun",
         default_index=0,
     )
@@ -66,3 +70,9 @@ elif selected == "🧩 Clusters(state wise)":
     st.header("🧩 Clustering Indian States by Light Pollution Intensity")
     if st.button("Run Model"):
         run_clusters()
+
+elif selected == "💾 DB-scan":
+    st.header("💾 DB-scan to find outliers of Indian States by Light Pollution Intensity")
+    if st.button("Run Model"):
+        run_dbscan()
+
