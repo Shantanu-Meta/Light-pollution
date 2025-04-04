@@ -1,0 +1,7 @@
+streamlit
+pandas
+numpy
+matplotlib
+scikit-learn
+tensorflow
+streamlit-option-menu
