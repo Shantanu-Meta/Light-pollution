@@ -1,6 +1,8 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 import time
+from dotenv import load_dotenv
+load_dotenv()
 
 # Custom Home page screen
 def show_home():
@@ -36,8 +38,8 @@ def run_dbscan():
 with st.sidebar:
     selected = option_menu(
         "Light Pollution Analyzer",  # App name as header
-        ["🏠 Home", "📈 Forecast (state wise)", "🔍 Key Factor", "🧩 Clusters(state wise)", "💾 DB-scan"],
-        icons=["house", "bar-chart", "graph-up", "diagram-3", "database"],
+        ["🏠 Home", "📈 Forecast (state wise)", "🔍 Key Factor", "🧩 Clusters(state wise)", "💾 DB-scan", "💬 Ask Bot"],
+        icons=["house", "bar-chart", "graph-up", "diagram-3", "database", "robot"],
         menu_icon="cloud-sun",
         default_index=0,
     )
@@ -76,3 +78,6 @@ elif selected == "💾 DB-scan":
     if st.button("Run Model"):
         run_dbscan()
 
+elif selected == "💬 Ask Bot":
+    from doc_chat import run_doc_chat
+    run_doc_chat()

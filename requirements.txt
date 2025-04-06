@@ -6,6 +6,19 @@ scikit-learn
 tensorflow
 streamlit-option-menu
 seaborn
+langchain
+openai
+tiktoken
+faiss-cpu
+python-dotenv
+PyMuPDF  # for PDFs
+langchain-community
+docx2txt # for Word Docs
+pypdf
+langchain-google-genai 
+google-generativeai
+
+
 
 
 
