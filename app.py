@@ -7,7 +7,7 @@ load_dotenv()
 st.set_page_config(
     page_title="Light Pollution Analyzer",   # Title in browser tab
     page_icon="💡",                          # Favicon - emoji or image like 'favicon.png'
-    layout="wide",                          # 'centered' or 'wide'
+    # layout="wide",                          # 'centered' or 'wide'
 )
 
 # Custom Home page screen
@@ -48,11 +48,14 @@ def run_dbscan():
 with st.sidebar:
     selected = option_menu(
         "Light Pollution Analyzer",  # App name as header
-        ["🏠 Home", "📈 Forecast (state wise)", "🔍 Key Factor", "🧩 Clusters(state wise)", "💾 DB-scan", "💬 Ask Bot"],
+        ["🏠 Home", "📈 Forecast (state wise)", "🔍 Key Factor", "🧩 Clusters(state wise)", "💾 Find outliers", "💬 Ask Bot"],
         icons=["house", "bar-chart", "graph-up", "diagram-3", "database", "robot"],
         menu_icon="cloud-sun",
         default_index=0,
     )
+
+    st.sidebar.caption("Developed by Group 11, IEM-BCA-2025")
+
 
 # Page Routing
 if selected == "🏠 Home":
@@ -67,7 +70,7 @@ elif selected == "📈 Forecast (state wise)":
 
 elif selected == "🔍 Key Factor":
     st.header("🔍 Analyze Key Pollution Factors")
-    target_state = st.text_input("Enter state name (e.g., Goa)")
+    target_state = st.text_input("Enter state name (e.g., Karnataka)")
     if target_state:
         if st.button("Find key factor"):
             run_key_factor(target_state)
@@ -77,8 +80,8 @@ elif selected == "🧩 Clusters(state wise)":
     if st.button("Run Model"):
         run_clusters()
 
-elif selected == "💾 DB-scan":
-    st.header("💾 DB-scan to find outliers of Indian States by Light Pollution Intensity")
+elif selected == "💾 Find outliers":
+    st.header("💾 Find outliers from Indian States by Light Pollution Intensity")
     if st.button("Run Model"):
         run_dbscan()
 

@@ -35,11 +35,11 @@ def load_and_preprocess_data():
 
 # -------------------- DBSCAN Clustering --------------------
 def run_dbscan_model():
-    st.subheader("🔍 DBSCAN Clustering on Light Pollution & Economic Data")
+    st.subheader("🔍 DBSCAN Clustering on Light Pollution intensity")
 
     df = load_and_preprocess_data()
 
-    features = ["agricultural_SOL", "urban_SOL", "changeOfSOL", "area_km2"]
+    features = ["agricultural_SOL", "urban_SOL", "area_km2"]
     X = df[features]
 
     scaler = StandardScaler()
@@ -126,4 +126,4 @@ def run_dbscan_model():
         st.markdown(f"**Cluster {cid}: {label}**")
 
     st.subheader("🗺️ State-wise Clusters")
-    st.dataframe(df[["state_name", "Cluster", "Cluster Label"]].sort_values(by="Cluster"))
+    st.dataframe(df[["state_name", "Cluster"]].sort_values(by="Cluster"))

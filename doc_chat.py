@@ -11,7 +11,8 @@ from langchain.document_loaders import PyPDFLoader
 load_dotenv()
 
 def run_doc_chat():
-    st.title("📄 Chat with our documentation")
+    st.title("📄 Chat with our AI")
+    st.subheader("Need info about research paper? Now just upload & ask! 😃")
 
     google_api_key = os.getenv("GOOGLE_API_KEY")
     if not google_api_key:
@@ -71,6 +72,6 @@ def run_doc_chat():
     if st.session_state.chat_history:
         st.markdown("### 💬 Chat History")
         for chat in st.session_state.chat_history:
-            st.markdown(f"**You:** {chat['question']}")
-            st.markdown(f"**Gemini:** {chat['answer']}")
+            st.markdown(f"**User:** {chat['question']}")
+            st.markdown(f"**AI:** {chat['answer']}")
             st.markdown("---")

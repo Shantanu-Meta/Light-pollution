@@ -34,7 +34,7 @@ def run_kmeans_model():
     df = load_and_preprocess_data()
 
     # Features for clustering
-    features = ["Urban_SOL", "Agriculture_SOL", "Area (km²)", "GSDP(INR billions)"]
+    features = ["Urban_SOL", "Agriculture_SOL", "GSDP(INR billions)"]
     X = df[features]
 
     # Normalize data
@@ -70,10 +70,10 @@ def run_kmeans_model():
 
     # Cluster Labels (0 = Low Pollution, 3 = High Pollution)
     cluster_labels = {
-        0: "🌿 Low Light Pollution (Mostly Agricultural States)",
-        1: "🌅 Moderate Light Pollution (Balanced Economy)",
-        2: "🌆 High Light Pollution (Urbanizing States)",
-        3: "🌃 Very High Light Pollution (Highly Urbanized States)"
+        0: "🌿 Low Light Pollution",
+        1: "🌅 Moderate Light Pollution",
+        2: "🌆 High Light Pollution",
+        3: "🌃 Very High Light Pollution"
     }
 
     # Show cluster summary
@@ -104,27 +104,19 @@ def run_kmeans_model():
 
     # -------------------- Model Performance Metrics --------------------
     silhouette_avg = silhouette_score(X_scaled, df["Cluster"])
-    davies_bouldin = davies_bouldin_score(X_scaled, df["Cluster"])
+
 
     st.subheader("📈 Model Performance & Evaluation")
 
     # Silhouette Score
-    st.markdown(f"**🔹 Silhouette Score:** `{silhouette_avg:.3f}` *(Higher is better, > 0.5 is good)*")
+    st.markdown(f"**🔹 Silhouette Score:** `{silhouette_avg:.3f}` ")
+    st.caption("Higher values indicate better-defined clusters.")
     if silhouette_avg > 0.5:
-        st.success("✅ Good clustering performance!")
+        st.success("Good clustering performance!")
     elif silhouette_avg > 0.2:
-        st.warning("⚠️ Clustering is moderate, consider improving feature selection.")
+        st.warning("moderate to good clustering performance!")
     else:
-        st.error("❌ Poor clustering, data separation might not be effective.")
-
-    # Davies-Bouldin Index
-    st.markdown(f"**🔹 Davies-Bouldin Index:** `{davies_bouldin:.3f}` *(Lower is better, < 0.5 is ideal)*")
-    if davies_bouldin < 0.5:
-        st.success("✅ Well-separated clusters!")
-    elif davies_bouldin < 1.5:
-        st.warning("⚠️ Clusters are slightly overlapping.")
-    else:
-        st.error("❌ Poor clustering, consider tuning features or K.")
+        st.error("Poor clustering, data separation might not be effective.")
 
     # -------------------- Cluster Interpretation --------------------
     st.subheader("🌎 Cluster Interpretation")

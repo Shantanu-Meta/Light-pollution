@@ -7,7 +7,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 import matplotlib.pyplot as plt
 
-
+@st.cache_data
 def forecast_sol(state_data, time_steps=5, epochs=100, batch_size=32):
     """
     Forecasts Urban_SOL and Agriculture_SOL for a given state using LSTM.
