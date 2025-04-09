@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import (
     mean_absolute_error, mean_squared_error, r2_score,
-    mean_absolute_percentage_error, explained_variance_score
+    mean_absolute_percentage_error
 )
 
 def run_keyfactor_model(target_state):
@@ -49,7 +49,7 @@ def run_keyfactor_model(target_state):
     X_scaled = scaler.fit_transform(X_state)
 
     # Split data
-    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_state, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_state, test_size=0.3, random_state=42)
 
     # Train Random Forest model
     model = RandomForestRegressor(n_estimators=100, random_state=42)
@@ -59,7 +59,7 @@ def run_keyfactor_model(target_state):
     features = ['agricultural_SOL', 'urban_SOL', 'area_km2']
     importance = model.feature_importances_
     key_factor = features[np.argmax(importance)]
-    st.success(f"🌟 Key Factor Influencing Light Pollution in {target_state.title()}: **{key_factor}**")
+    st.success(f"🌟 Key Factor Influencing Light Pollution in {target_state.title()} : **{key_factor}**")
 
     # Predict
     y_pred = model.predict(X_test)
@@ -69,28 +69,30 @@ def run_keyfactor_model(target_state):
     rmse = np.sqrt(mean_squared_error(y_test, y_pred))
     r2 = r2_score(y_test, y_pred)
     mape = mean_absolute_percentage_error(y_test, y_pred) * 100  # Convert to %
+    mean_squared_error_val = mean_squared_error(y_test, y_pred)
 
     # Interpretation Logic
-    def interpret_mae(val):
-        return "🟢 Low (Good)" if val <= 50 else "🟡 Moderate" if val <= 150 else "🔴 High (Bad)"
+    # def interpret_mae(val):
+    #     return "🟢 Low (Good)" if val <= 50 else "🟡 Moderate" if val <= 150 else "🔴 High (Bad)"
 
-    def interpret_rmse(val):
-        return "🟢 Low (Good)" if val <= 75 else "🟡 Moderate" if val <= 200 else "🔴 High (Bad)"
+    # def interpret_rmse(val):
+    #     return "🟢 Low (Good)" if val <= 75 else "🟡 Moderate" if val <= 200 else "🔴 High (Bad)"
 
     def interpret_r2(val):
-        return "🟢 Excellent" if val >= 0.85 else "🟡 Moderate" if val >= 0.6 else "🔴 Poor"
+        return "🟢 Excellent varient" if val >= 0.65 else "🟡 Moderate varient" if val >= 0.4 else "🔴 Poor"
 
     def interpret_mape(val):
-        return "🟢 Very Accurate" if val <= 10 else "🟡 Moderately Accurate" if val <= 25 else "🔴 Low Accuracy"
+        return "🟢 Accurate" if val <= 15 else "🟡 Moderately Accurate" if val <= 50 else "🔴 Low Accuracy"
 
     # Display metrics
     st.subheader(f"📊 Performance Metrics for {target_state.title()}")
     st.markdown(f"""
     - **R² Score**: `{r2:.4f}` → {interpret_r2(r2)}  
-      _(How well the model explains variance in the data)_
+      _(Coefficient of Determination - How well the model explains variance in the data)_
 
     - **MAPE**: `{mape:.2f}%` → {interpret_mape(mape)}  
-      _(Error as a percentage of actual values)_
+      _(Mean absolute percent error, lower the value, better the result)_
+
     """)
 
     # Residual Plot
@@ -100,8 +102,21 @@ def run_keyfactor_model(target_state):
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.scatter(y_test, y_pred - y_test, alpha=0.6, label="Residuals")
     ax.axhline(0, color="red", linestyle="dashed", linewidth=2, label="Zero Error Line")
-    ax.set_xlabel("Actual Key Values")
+    ax.set_xlabel("Actual SOL Values")
     ax.set_ylabel("Residuals (Predicted - Actual)")
     ax.set_title("Residual Plot")
     ax.legend()
     st.pyplot(fig)
+
+    # Add this after st.pyplot(fig)
+    residuals = y_pred - y_test
+    std_dev = np.std(residuals)
+
+    if abs(np.mean(residuals)) < 0.1 * std_dev and std_dev < 0.3 * np.mean(y_test):
+        quality = "🟢 Good Residual Pattern (Randomly scattered)"
+    elif std_dev < 0.5 * np.mean(y_test):
+        quality = "🟡 Moderate Residual Pattern"
+    else:
+        quality = "🔴 Poor Residual Pattern (strong pattern or variance)"
+
+    st.info(f"📈 **Residual Quality**: {quality}")

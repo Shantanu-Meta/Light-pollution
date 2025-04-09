@@ -94,15 +94,15 @@ def run_forecast_model(target_state):
         # Display forecast
         st.success("✅ Forecasting completed successfully!")
         st.subheader(f"Forecast for {target_state.title()}")
-        st.write(f"**2025**: Urban_SOL = {forecasts['2025']['Urban_SOL']:.2f}, Agriculture_SOL = {forecasts['2025']['Agriculture_SOL']:.2f}")
-        st.write(f"**2026**: Urban_SOL = {forecasts['2026']['Urban_SOL']:.2f}, Agriculture_SOL = {forecasts['2026']['Agriculture_SOL']:.2f}")
-        st.caption("ℹ️ In nW/cm²/sr, higher values indicate more light pollution.")
+        st.write(f"**2025**: Urban SOL = {forecasts['2025']['Urban_SOL']:.2f}, Agriculture SOL = {forecasts['2025']['Agriculture_SOL']:.2f}")
+        st.write(f"**2026**: Urban SOL = {forecasts['2026']['Urban_SOL']:.2f}, Agriculture SOL = {forecasts['2026']['Agriculture_SOL']:.2f}")
+        st.caption("ℹ️ In nW/cm²/sr, higher SOL (Sum of Lights) indicate more light pollution.")
 
         # Model Evaluation
         st.subheader("📊 Model Evaluation")
         st.write(f"**Training MSE**: {train_mse:.6f} {'✅ (Good)' if train_mse < 0.3 else '⚠️ (Can Improve)'}")
         st.write(f"**Testing MSE**: {test_mse:.6f} {'✅ (Good)' if test_mse < 0.3 else '⚠️ (Can Improve)'}")
-        st.caption("ℹ️ Lower MSE means better prediction accuracy.")
+        st.caption("ℹ️ Lower MSE (Mean Squared Error) means better prediction accuracy.")
 
         # Trend Analysis
         last_actual = historical_data[-1]
